@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#05030f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SoundArt">
+  <title>SoundArt</title>
+  <link rel="manifest" href="manifest.json">
+  <meta property="og:title" content="SoundArt - 音で星を育てる">
+  <meta property="og:description" content="10秒録音するだけで、あなただけの星が育つ。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ホーム画面 -->
+  <div id="screen-home" class="screen active">
+    <div class="home-content">
+      <div class="logo">◎ SoundArt</div>
+      <div class="planet-wrap">
+        <canvas id="planet-home" class="planet-canvas"></canvas>
+      </div>
+      <div class="home-info">
+        <div id="home-day" class="home-day">Day 0</div>
+        <div id="home-last-event" class="home-last-event">最初の録音で星が生まれる</div>
+      </div>
+      <button id="btn-start" class="btn-record">
+        <svg class="mic-icon" viewBox="0 0 24 24" fill="none">
+          <rect x="9" y="2" width="6" height="12" rx="3" fill="currentColor"/>
+          <path d="M5 10a7 7 0 0 0 14 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="19" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="8" y1="22" x2="16" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        録音する
+      </button>
+    </div>
+  </div>
+
+  <!-- 録音画面 -->
+  <div id="screen-recording" class="screen">
+    <div class="recording-content">
+      <div class="countdown-wrap">
+        <svg class="progress-ring" viewBox="0 0 120 120">
+          <circle class="progress-ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="progress-ring-fill" id="progress-circle" cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="countdown" id="countdown">10</div>
+      </div>
+      <p class="recording-label">● 録音中</p>
+      <div class="visualizer" id="visualizer">
+        <div class="bar" id="bar0"></div><div class="bar" id="bar1"></div>
+        <div class="bar" id="bar2"></div><div class="bar" id="bar3"></div>
+        <div class="bar" id="bar4"></div><div class="bar" id="bar5"></div>
+        <div class="bar" id="bar6"></div><div class="bar" id="bar7"></div>
+        <div class="bar" id="bar8"></div><div class="bar" id="bar9"></div>
+        <div class="bar" id="bar10"></div><div class="bar" id="bar11"></div>
+        <div class="bar" id="bar12"></div><div class="bar" id="bar13"></div>
+        <div class="bar" id="bar14"></div><div class="bar" id="bar15"></div>
+      </div>
+      <button id="btn-stop" class="btn-stop">停止して生成</button>
+    </div>
+  </div>
+
+  <!-- 生成中画面 -->
+  <div id="screen-generating" class="screen">
+    <div class="generating-content">
+      <div class="spinner"></div>
+      <p id="generating-label">アートを生成中...</p>
+    </div>
+  </div>
+
+  <!-- 結果画面 -->
+  <div id="screen-result" class="screen">
+    <div class="result-content">
+      <!-- アート（上） -->
+      <canvas id="art-canvas" class="result-art"></canvas>
+
+      <!-- 星の変化（下） -->
+      <div class="planet-result-wrap">
+        <div class="planet-event-label" id="event-label"></div>
+        <canvas id="planet-result" class="planet-canvas-result"></canvas>
+        <div class="planet-day-label" id="result-day"></div>
+      </div>
+
+      <div id="result-meta" class="result-meta"></div>
+
+      <div class="result-actions">
+        <button id="btn-share" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <polyline points="16,6 12,2 8,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="12" y1="2" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          シェアする
+        </button>
+        <button id="btn-save" class="btn-secondary">保存</button>
+        <button id="btn-retry" class="btn-ghost">ホームへ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="planet/planet-state.js"></script>
+  <script src="planet/planet-mapper.js"></script>
+  <script src="planet/planet-renderer.js"></script>
+  <script src="share/share-composer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

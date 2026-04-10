@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="c"></canvas>
+<script>
+function makeIcon(size) {
+  const c = document.getElementById('c');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  // 背景
+  const bg = ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  bg.addColorStop(0,'#1a0a2e'); bg.addColorStop(1,'#0a0a0f');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,size,size);
+  // 円
+  const glow = ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size*0.35);
+  glow.addColorStop(0,'rgba(220,180,255,0.9)');
+  glow.addColorStop(0.4,'rgba(168,85,247,0.6)');
+  glow.addColorStop(1,'rgba(168,85,247,0)');
+  ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(size/2,size/2,size*0.35,0,Math.PI*2); ctx.fill();
+  // ◎ テキスト
+  ctx.fillStyle = 'white'; ctx.font = `bold ${size*0.28}px sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('◎', size/2, size/2);
+  return c.toDataURL('image/png');
+}
+
+['192','512'].forEach(s => {
+  const data = makeIcon(Number(s));
+  const a = document.createElement('a');
+  a.download = `icon-${s}.png`;
+  a.href = data;
+  document.body.appendChild(a);
+  a.click();
+});
+</script>
+</body>
+</html>

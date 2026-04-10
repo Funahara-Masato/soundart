@@ -1,0 +1,106 @@
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg: #05030f;
+  --surface: #0e0b1e;
+  --accent1: #a855f7;
+  --accent2: #ec4899;
+  --text: #f1f5f9;
+  --text-muted: #64748b;
+  --radius: 16px;
+}
+
+html, body { width:100%; height:100%; overflow:hidden; background:var(--bg);
+  color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif;
+  -webkit-font-smoothing:antialiased; }
+
+/* ── スクリーン管理 ── */
+.screen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
+.screen.active { opacity:1; pointer-events:all; }
+
+/* ═══════════════ ホーム画面 ═══════════════ */
+.home-content { display:flex; flex-direction:column; align-items:center;
+  padding:24px 20px 32px; gap:12px; width:100%; max-width:400px; }
+
+.logo { font-size:13px; letter-spacing:0.2em; color:var(--accent1); font-weight:600; }
+
+.planet-wrap { width:min(72vw,280px); height:min(72vw,280px); }
+.planet-canvas { width:100%; height:100%; display:block; }
+
+.home-info { text-align:center; }
+.home-day { font-size:clamp(22px,6vw,32px); font-weight:800;
+  background:linear-gradient(135deg,var(--text),var(--accent1));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.home-last-event { font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+.btn-record { display:flex; flex-direction:column; align-items:center; gap:10px;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  color:white; border:none; border-radius:50%; width:130px; height:130px;
+  font-size:14px; font-weight:700; cursor:pointer; margin-top:8px;
+  box-shadow:0 0 40px rgba(168,85,247,0.4); transition:transform 0.2s; position:relative; }
+.btn-record::before { content:''; position:absolute; inset:-8px; border-radius:50%;
+  border:2px solid rgba(168,85,247,0.3); animation:pulse 2s ease-in-out infinite; }
+.btn-record::after { content:''; position:absolute; inset:-16px; border-radius:50%;
+  border:2px solid rgba(168,85,247,0.15); animation:pulse 2s ease-in-out infinite 0.4s; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.08);opacity:0.5} }
+.btn-record:active { transform:scale(0.95); }
+.mic-icon { width:32px; height:32px; }
+
+/* ═══════════════ 録音画面 ═══════════════ */
+.recording-content { display:flex; flex-direction:column; align-items:center; gap:28px; padding:32px 24px; }
+
+.countdown-wrap { position:relative; width:120px; height:120px; }
+.progress-ring { width:120px; height:120px; transform:rotate(-90deg); }
+.progress-ring-bg { fill:none; stroke:var(--surface); stroke-width:6; }
+.progress-ring-fill { fill:none; stroke:url(#grad); stroke-width:6; stroke-linecap:round;
+  stroke-dasharray:339.3; stroke-dashoffset:0; transition:stroke-dashoffset 1s linear; }
+.countdown { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:40px; font-weight:800;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.recording-label { font-size:14px; color:var(--accent2); font-weight:600; letter-spacing:0.1em;
+  animation:blink 1s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.visualizer { display:flex; align-items:flex-end; gap:4px; height:60px; width:200px; }
+.bar { flex:1; background:linear-gradient(to top,var(--accent1),var(--accent2)); border-radius:3px 3px 0 0;
+  min-height:4px; height:4px; transition:height 0.05s ease; opacity:0.8; }
+
+.btn-stop { background:transparent; border:2px solid var(--accent2); color:var(--accent2);
+  padding:12px 32px; border-radius:100px; font-size:14px; font-weight:700; cursor:pointer; }
+
+/* ═══════════════ 生成中画面 ═══════════════ */
+.generating-content { display:flex; flex-direction:column; align-items:center; gap:20px; color:var(--text-muted); }
+.spinner { width:48px; height:48px; border:3px solid var(--surface);
+  border-top-color:var(--accent1); border-right-color:var(--accent2);
+  border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* ═══════════════ 結果画面 ═══════════════ */
+.result-content { display:flex; flex-direction:column; align-items:center; gap:12px;
+  padding:16px; width:100%; max-width:420px; overflow-y:auto; max-height:100vh; }
+
+.result-art { width:100%; max-width:360px; border-radius:var(--radius); display:block;
+  box-shadow:0 0 40px rgba(168,85,247,0.2); }
+
+.planet-result-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; width:100%; }
+.planet-event-label { font-size:14px; color:var(--accent1); font-weight:600; text-align:center;
+  min-height:20px; }
+.planet-canvas-result { width:min(56vw,220px); height:min(56vw,220px); display:block; }
+.planet-day-label { font-size:18px; font-weight:700; color:var(--text); }
+
+.result-meta { font-size:11px; color:var(--text-muted); text-align:center; }
+
+.result-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:360px; }
+
+.btn-primary { display:flex; align-items:center; justify-content:center; gap:8px;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2)); color:white; border:none;
+  padding:16px; border-radius:var(--radius); font-size:16px; font-weight:700; cursor:pointer; }
+.btn-primary:active { opacity:0.85; }
+.btn-secondary { background:var(--surface); color:var(--text); border:none; padding:14px;
+  border-radius:var(--radius); font-size:15px; font-weight:600; cursor:pointer; }
+.btn-ghost { background:transparent; color:var(--text-muted); border:none; padding:12px;
+  border-radius:var(--radius); font-size:14px; cursor:pointer; }
+
+svg defs { position:absolute; }
